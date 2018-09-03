@@ -36,7 +36,6 @@ class ViewController: UIViewController {
         for _ in 0 ..< 1000 {
             array.append(randomString(length: Int(arc4random_uniform(8))))
         }
-        collectionView.reloadData()
     }
 }
 
@@ -54,4 +53,21 @@ extension ViewController: UICollectionViewDataSource {
 
 class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var label: UILabel!
+}
+
+class AutoLayoutCollectionView: UICollectionView {
+    
+    private var reloadDataCompletionBlock: (() -> Void)?
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        reloadDataCompletionBlock?()
+        reloadDataCompletionBlock = nil
+    }
+    
+    override func reloadData() {
+        reloadDataCompletionBlock = { self.collectionViewLayout.invalidateLayout() }
+        super.reloadData()
+    }
 }
