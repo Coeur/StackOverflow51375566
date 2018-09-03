@@ -32,7 +32,6 @@ class ViewController: UIViewController {
         
         collectionLayout.estimatedItemSize = CGSize(width: 50, height: 25)
         collectionLayout.itemSize = UICollectionViewFlowLayout.automaticSize
-        collectionLayout.minimumInteritemSpacing = 10
         
         for _ in 0 ..< 1000 {
             array.append(randomString(length: Int(arc4random_uniform(8))))
