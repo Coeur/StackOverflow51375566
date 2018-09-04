@@ -57,17 +57,18 @@ class CollectionViewCell: UICollectionViewCell {
 
 class AutoLayoutCollectionView: UICollectionView {
     
-    private var reloadDataCompletionBlock: (() -> Void)?
+    private var shouldInvalidateLayout = false
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        
-        reloadDataCompletionBlock?()
-        reloadDataCompletionBlock = nil
+        if shouldInvalidateLayout {
+            collectionViewLayout.invalidateLayout()
+            shouldInvalidateLayout = false
+        }
     }
     
     override func reloadData() {
-        reloadDataCompletionBlock = { self.collectionViewLayout.invalidateLayout() }
+        shouldInvalidateLayout = true
         super.reloadData()
     }
 }
